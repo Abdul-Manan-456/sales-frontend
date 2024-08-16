@@ -1,0 +1,19 @@
+{
+  "eslint.debug": true,
+  "eslint.format.enable": true,
+  "eslint.run": "onSave",
+  "eslint.enable": true,
+  "eslint.ignoreUntitled": false,
+  "eslint.onIgnoredFiles": "off",
+  "eslint.useFlatConfig": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.execArgv": null
+}
