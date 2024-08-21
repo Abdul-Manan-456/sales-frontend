@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // async middleware()
+  experimental: {
+    missingSuspenseWithCSRBailout: false
+  }
 }
 
 export default nextConfig

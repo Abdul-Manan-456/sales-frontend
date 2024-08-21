@@ -1,3 +1,14 @@
+import axios from "axios"
+import React from "react"
+import { toast } from "sonner"
+
+import { DeleteIcon } from "@/assets/icons"
+import AddCategory from "@/components/category/add-category"
+import {
+    Card,
+    CardContent,
+    CardHeader,
+} from "@/components/ui/card"
 import {
     Table,
     TableBody,
@@ -6,17 +17,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {
-    Card,
-    CardContent,
-    CardHeader,
-} from "@/components/ui/card"
-import AddCategory from "@/components/category/add-category"
-import { DeleteIcon } from "@/assets/icons"
 
-import axios from "axios"
-import { toast } from "sonner"
-import React from "react"
 import EditCategory from "../category/edit-category"
 
 

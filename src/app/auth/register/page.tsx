@@ -1,26 +1,24 @@
 'use client'
-import { HidePassword, ShowPassword } from "@/assets/icons"
+import { yupResolver } from '@hookform/resolvers/yup'
+import axios from 'axios'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import InputComp from "@/components/inputComp"
-import { Button } from "@/components/ui/button"
-
-import { registerUserValidator } from "@/utils/validations/user/auth"
-import { yupResolver } from "@hookform/resolvers/yup"
-import axios from "axios"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import Link from "next/link"
-
+import { HidePassword, ShowPassword } from '@/assets/icons'
+import InputComp from '@/components/inputComp'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-
+  CardTitle
+} from '@/components/ui/card'
+import { registerUserValidator } from '@/utils/validations/user/auth'
+const BaseUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}`
 const Register = () => {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
@@ -29,13 +27,13 @@ const Register = () => {
   //  -------------- FORM SUBMISSION LOGIC ------------------
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(registerUserValidator),
-    mode: "onChange",
-    defaultValues: { name: "", email: "", password: "" }
+    mode: 'onChange',
+    defaultValues: { name: '', email: '', password: '' }
   })
   const onSubmit = async (userData: any) => {
     setLoading(true)
     await axios
-      .post("http://localhost:4000/api/v1/auth", userData)
+      .post(`${BaseUrl}/v1/auth`, userData)
       .then((res) => {
         setLoading(false)
         toast.success('User Registered', {
@@ -48,9 +46,8 @@ const Register = () => {
           description: err?.response?.data?.message
         })
         setLoading(false)
-      });
+      })
   }
-
 
   return (
     <main className="md:h-screen flex items-center justify-center container px-2 md:px-0 pt-9 md:pt-0 border border-black">
@@ -62,13 +59,8 @@ const Register = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-
-
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-
               <InputComp
                 name="name"
                 label="Name"
@@ -87,11 +79,15 @@ const Register = () => {
                 <InputComp
                   label="Password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeHolder="Enter your password" control={control}
+                  type={showPassword ? 'text' : 'password'}
+                  placeHolder="Enter your password"
+                  control={control}
                 />
 
-                <div onClick={() => setShowPassword(!showPassword)} className="absolute right-0 top-1/2 transform -translate-y-0 mr-2 cursor-pointer p-1">
+                <div
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-0 top-1/2 transform -translate-y-0 mr-2 cursor-pointer p-1"
+                >
                   {showPassword ? <ShowPassword /> : <HidePassword />}
                 </div>
               </div>
@@ -100,19 +96,20 @@ const Register = () => {
                 label="Confirm Password"
                 name="confirmPassword"
                 type="password"
-                placeHolder="Enter your password" control={control}
+                placeHolder="Enter your password"
+                control={control}
               />
-
             </div>
             <Button type="submit" disabled={loading} className="w-full mt-3">
-              Create an account  <span className={loading ? "loader ml-3" : ""}></span>
+              Create an account{' '}
+              <span className={loading ? 'loader ml-3' : ''}></span>
             </Button>
             {/* <Button variant="outline" className="w-full">
               Sign up with GitHub
             </Button> */}
           </form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link href="/auth/login" className="underline">
               Sign in
             </Link>

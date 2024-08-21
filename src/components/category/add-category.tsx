@@ -1,4 +1,11 @@
 'use client'
+import { yupResolver } from "@hookform/resolvers/yup"
+import { DialogClose } from "@radix-ui/react-dialog"
+import axios from "axios"
+import React, { useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -8,15 +15,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
 import { categorySchema } from "@/utils/validations/category"
-import { DialogClose } from "@radix-ui/react-dialog"
-import InputComp from "../inputComp"
-import React, { useState } from "react"
-import axios from "axios"
 
-import { toast } from "sonner"
+import InputComp from "../inputComp"
 interface AddCategoryProps {
     mutate: any;
 }
