@@ -36,7 +36,8 @@ const Navbar = () => {
             className={cn(
               'flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
               {
-                'bg-accent text-accent-foreground': isActive(path.href)
+                'bg-accent hover:bg-accent/80 text-accent-foreground hover:text-accent-foreground':
+                  isActive(path.href)
               }
             )}
           >

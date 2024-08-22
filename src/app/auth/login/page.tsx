@@ -44,7 +44,11 @@ const Login = () => {
         toast.success('Success', {
           description: res?.data?.message
         })
-        Cookies.set('auth-token', res?.data?.data?.token)
+        Cookies.set('auth-token', res?.data?.data?.token, {
+          sameSite: 'None',
+          path: '/',
+          secure: true
+        })
         router.push('/')
       })
       .catch((err: any) => {

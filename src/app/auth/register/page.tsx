@@ -50,7 +50,7 @@ const Register = () => {
   }
 
   return (
-    <main className="md:h-screen flex items-center justify-center container px-2 md:px-0 pt-9 md:pt-0 border border-black">
+    <main className="md:h-screen flex items-center justify-center container px-2 md:px-0 pt-9 md:pt-0">
       <Card className="w-full max-w-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-xl">Sign Up</CardTitle>
