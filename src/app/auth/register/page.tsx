@@ -33,7 +33,7 @@ const Register = () => {
   const onSubmit = async (userData: any) => {
     setLoading(true)
     await axios
-      .post(`${BaseUrl}/v1/auth`, userData)
+      .post(`${BaseUrl}/auth`, userData)
       .then((res) => {
         setLoading(false)
         toast.success('User Registered', {
