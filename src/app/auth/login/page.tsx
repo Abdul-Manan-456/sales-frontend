@@ -1,7 +1,6 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -44,11 +43,7 @@ const Login = () => {
         toast.success('Success', {
           description: res?.data?.message
         })
-        Cookies.set('auth-token', res?.data?.data?.token, {
-          sameSite: 'None',
-          path: '/',
-          secure: true
-        })
+        localStorage.setItem('token', res?.data?.data?.token)
         router.push('/')
       })
       .catch((err: any) => {

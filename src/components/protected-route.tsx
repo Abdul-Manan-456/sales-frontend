@@ -9,8 +9,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const path = usePathname()
   useEffect(() => {
     const protectedRoutes = ['/', '/customer', '/category', '/sales']
-    const token = Cookies.get('auth-token')
-    console.log('token------------', token)
+    const token = localStorage.getItem('token')
+    console.log('token-----------', token)
     if (!token && protectedRoutes.includes(path)) {
       router.push('/auth/login')
     }

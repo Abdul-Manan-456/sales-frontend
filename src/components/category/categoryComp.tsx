@@ -15,8 +15,6 @@ import { TabsContent } from '@/components/ui/tabs'
 import { DeleteComp } from '../delete-comp'
 import EditCategory from './edit-category'
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
-const deleteUrl = `${baseUrl}/category`
 interface CategoryCompProps {
   categories: any[]
   mutate: any
@@ -66,7 +64,7 @@ const CategoryComp: React.FC<CategoryCompProps> = ({ categories, mutate }) => {
                         <TableCell className="flex justify-center">
                           <DeleteComp
                             id={cat._id}
-                            url={deleteUrl}
+                            url={'/category'}
                             mutate={mutate}
                           />
                         </TableCell>

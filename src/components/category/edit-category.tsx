@@ -1,7 +1,6 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DialogClose } from '@radix-ui/react-dialog'
-import axios from 'axios'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -16,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import axiosInstance from '@/utils/axiosInstance'
 import { categorySchema } from '@/utils/validations/category'
 
 import InputComp from '../inputComp'
@@ -24,7 +24,6 @@ interface EditCategoryProps {
   categoryProp: string
   mutate: any
 }
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
 
 const EditCategory: React.FC<EditCategoryProps> = ({
   id,
@@ -42,10 +41,8 @@ const EditCategory: React.FC<EditCategoryProps> = ({
 
   const onSubmit = async (data: any) => {
     setLoading(true)
-    await axios
-      .patch(`${baseUrl}/category/${id}`, data, {
-        withCredentials: true
-      })
+    await axiosInstance
+      .patch(`/category/${id}`, data)
       .then(() => {
         setLoading(false)
         mutate()

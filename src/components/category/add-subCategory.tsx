@@ -1,7 +1,6 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DialogClose } from '@radix-ui/react-dialog'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -24,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import axiosInstance from '@/utils/axiosInstance'
 import { subCategorySchema } from '@/utils/validations/category'
 
 import InputComp from '../inputComp'
@@ -36,7 +36,6 @@ const AddSubCategory: React.FC<AddSubCategoryProps> = ({
   mutate,
   categories
 }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
   const [loading, setLoading] = useState(false)
   const initialValues = {
     category: '',
@@ -63,10 +62,8 @@ const AddSubCategory: React.FC<AddSubCategoryProps> = ({
   }, [isSubmitSuccessful])
   const onSubmit = async (data: any) => {
     setLoading(true)
-    await axios
-      .post(`${baseUrl}/category`, data, {
-        withCredentials: true
-      })
+    await axiosInstance
+      .post(`/category`, data)
       .then(() => {
         setLoading(false)
         mutate()

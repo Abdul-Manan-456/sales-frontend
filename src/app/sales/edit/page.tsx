@@ -1,6 +1,5 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import axios from 'axios'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -34,6 +33,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
+import axiosInstance from '@/utils/axiosInstance'
 import { salesSchema } from '@/utils/validations/sales.validation'
 
 type SalesData = {
@@ -51,13 +51,10 @@ type SalesData = {
   date: Date
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
-const deleteUrl = `${baseUrl}/invoice`
+const deleteUrl = `/invoice`
 const redirectUrlWhenDeleted = '/sales'
 const swrFetcher = async (args: string) => {
-  const { data } = await axios.get(args, {
-    withCredentials: true
-  })
+  const { data } = await axiosInstance.get(args)
   return data
 }
 //
@@ -72,14 +69,11 @@ const EditSales = () => {
 
   const [loading, setLoading] = useState(false)
   // -----------------    FETCH DATA FROM BACKEND ----------
-  const { data } = useSWR(`${baseUrl}/user`, swrFetcher)
+  const { data } = useSWR(`/user`, swrFetcher)
   const customers = data?.data
-  const { data: fetchCategory } = useSWR(`${baseUrl}/category`, swrFetcher)
+  const { data: fetchCategory } = useSWR(`/category`, swrFetcher)
   const categoryData = fetchCategory?.data
-  const { data: sales, isLoading } = useSWR(
-    `${baseUrl}/invoice/${id}`,
-    swrFetcher
-  )
+  const { data: sales, isLoading } = useSWR(`/invoice/${id}`, swrFetcher)
   const salesData = sales?.data
   const values: SalesData = {
     userId: salesData?.userId?._id,
@@ -118,10 +112,8 @@ const EditSales = () => {
   const onSubmit = async (data: any) => {
     const submittedData = { ...data }
     setLoading(true)
-    await axios
-      .patch(`${baseUrl}/invoice/${id}`, submittedData, {
-        withCredentials: true
-      })
+    await axiosInstance
+      .patch(`/invoice/${id}`, submittedData)
       .then(() => {
         setLoading(false)
         toast.success('Edited', {

@@ -1,5 +1,4 @@
 'use client'
-import axios from 'axios'
 import { toast } from 'sonner'
 import useSWR from 'swr'
 
@@ -7,14 +6,15 @@ import CategoryComp from '@/components/category/categoryComp'
 import SubCategoryComp from '@/components/category/subCategoryComp'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import axiosInstance from '@/utils/axiosInstance'
 const Category = () => {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/category`
-  const { data, error, isLoading, mutate } = useSWR(url, async (args) => {
-    const { data } = await axios.get(args, {
-      withCredentials: true
-    })
-    return data
-  })
+  const { data, error, isLoading, mutate } = useSWR(
+    '/category',
+    async (args) => {
+      const { data } = await axiosInstance.get(args)
+      return data
+    }
+  )
   const categories = data?.data
 
   if (isLoading) {

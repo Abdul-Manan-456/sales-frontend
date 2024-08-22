@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React from 'react'
 import { toast } from 'sonner'
 
@@ -13,10 +12,10 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { TabsContent } from '@/components/ui/tabs'
+import axiosInstance from '@/utils/axiosInstance'
 
 import AddSubCategory from './add-subCategory'
 import EditCategory from './edit-category'
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
 
 interface SubCategoryCompProps {
   categories: any[]
@@ -27,10 +26,8 @@ const SubCategoryComp: React.FC<SubCategoryCompProps> = ({
   mutate
 }) => {
   const deleteCat = (id: string) => {
-    axios
-      .delete(`${baseUrl}/category/${id}`, {
-        withCredentials: true
-      })
+    axiosInstance
+      .delete(`/category/${id}`)
       .then(() => {
         toast.success('Success', {
           description: 'Category Deleted'

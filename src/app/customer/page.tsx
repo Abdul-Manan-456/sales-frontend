@@ -1,7 +1,11 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import React from 'react'
+import { toast } from 'sonner'
+import useSWR from 'swr'
 
+import AddEditCustomer from '@/components/customer/add-edit-customer'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Table,
@@ -11,14 +15,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import useSWR from 'swr'
-
-import AddEditCustomer from '@/components/customer/add-edit-customer'
+import axiosInstance from '@/utils/axiosInstance'
 
 const CustomerPage = () => {
   const router = useRouter()
@@ -26,15 +23,10 @@ const CustomerPage = () => {
     router.push(`/customer/detail?id=${id}`)
   }
 
-  const { data, error, isLoading, mutate } = useSWR(
-    `${baseUrl}/user`,
-    async (args) => {
-      const { data } = await axios.get(args, {
-        withCredentials: true
-      })
-      return data
-    }
-  )
+  const { data, error, isLoading, mutate } = useSWR(`/user`, async (args) => {
+    const { data } = await axiosInstance.get(args)
+    return data
+  })
   const users = data?.data
 
   if (isLoading) {

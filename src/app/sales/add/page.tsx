@@ -1,6 +1,5 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import axios from 'axios'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import moment from 'moment'
@@ -34,6 +33,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
+import axiosInstance from '@/utils/axiosInstance'
 import { salesSchema } from '@/utils/validations/sales.validation'
 
 type SalesData = {
@@ -62,11 +62,8 @@ const defaultValues: SalesData = {
   status: false,
   date: new Date()
 }
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
 const swrFetcher = async (args: string) => {
-  const { data } = await axios.get(args, {
-    withCredentials: true
-  })
+  const { data } = await axiosInstance.get(args)
   return data
 }
 
@@ -76,9 +73,9 @@ const AddSales = () => {
   const [loading, setLoading] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   // -----------------    FETCH DATA FROM BACKEND ----------
-  const { data } = useSWR(`${baseUrl}/user`, swrFetcher)
+  const { data } = useSWR(`/user`, swrFetcher)
   const customers = data?.data
-  const { data: fetchCategory } = useSWR(`${baseUrl}/category`, swrFetcher)
+  const { data: fetchCategory } = useSWR(`/category`, swrFetcher)
   const categoryData = fetchCategory?.data
   //--------------------------- FROM LOGIC -------------------
   const {
@@ -106,10 +103,8 @@ const AddSales = () => {
   const onSubmit = async (data: any) => {
     const submittedData = { ...data, date, status: isChecked }
     setLoading(true)
-    await axios
-      .post(`${baseUrl}/invoice`, submittedData, {
-        withCredentials: true
-      })
+    await axiosInstance
+      .post(`/invoice`, submittedData)
       .then(() => {
         setLoading(false)
         toast.success('Added', {

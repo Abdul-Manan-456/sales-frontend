@@ -1,7 +1,6 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DialogClose } from '@radix-ui/react-dialog'
-import axios from 'axios'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -16,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import axiosInstance from '@/utils/axiosInstance'
 import { customerSchema } from '@/utils/validations/customer'
 
 import InputComp from '../inputComp'
@@ -38,7 +38,6 @@ interface CustomerData {
   description: string
   name: string
 }
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
 const AddEditCustomer: React.FC<AddCategoryProps> = ({ mutate, user }) => {
   const defaultValues = {
     name: '',
@@ -68,10 +67,8 @@ const AddEditCustomer: React.FC<AddCategoryProps> = ({ mutate, user }) => {
 
   const submitCustomerAdded = async (data: any) => {
     setLoading(true)
-    await axios
-      .post(`${baseUrl}/user`, data, {
-        withCredentials: true
-      })
+    await axiosInstance
+      .post(`/user`, data)
       .then(() => {
         setLoading(false)
         mutate()
@@ -90,8 +87,8 @@ const AddEditCustomer: React.FC<AddCategoryProps> = ({ mutate, user }) => {
   }
   const submitCustomerEdit = async (data: any) => {
     setLoading(true)
-    await axios
-      .patch(`${baseUrl}/user/${user?._id}`, data, {
+    await axiosInstance
+      .patch(`/user/${user?._id}`, data, {
         withCredentials: true
       })
       .then(() => {

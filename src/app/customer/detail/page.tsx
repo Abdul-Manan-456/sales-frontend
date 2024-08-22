@@ -12,7 +12,6 @@ import {
   TableRow
 } from '@/components/ui/table'
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
-import axios from 'axios'
 import { DollarSign } from 'lucide-react'
 import moment from 'moment'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -22,6 +21,7 @@ import useSWR from 'swr'
 import { DeleteComp } from '@/components/delete-comp'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import axiosInstance from '@/utils/axiosInstance'
 
 const CustomerPage = () => {
   const param = useSearchParams()
@@ -29,18 +29,14 @@ const CustomerPage = () => {
   const id = param.get('id')
   const deleteUrl = `${baseUrl}/user`
 
-  const { data, error, isLoading } = useSWR(
-    `${baseUrl}/invoice/detail`,
-    async (args) => {
-      const { data } = await axios.get(args, {
-        withCredentials: true,
-        params: {
-          userId: id
-        }
-      })
-      return data?.data
-    }
-  )
+  const { data, error, isLoading } = useSWR(`/invoice/detail`, async (args) => {
+    const { data } = await axiosInstance.get(args, {
+      params: {
+        userId: id
+      }
+    })
+    return data?.data
+  })
   if (isLoading) {
     return <div>loading...</div>
   }
