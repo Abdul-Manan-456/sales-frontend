@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import useSWR from 'swr'
 
 import AddEditCustomer from '@/components/customer/add-edit-customer'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Table,
@@ -30,7 +31,11 @@ const CustomerPage = () => {
   const users = data?.data
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner className="w-10 h-10" />
+      </div>
+    )
   }
   if (error) {
     toast.error('Error', {

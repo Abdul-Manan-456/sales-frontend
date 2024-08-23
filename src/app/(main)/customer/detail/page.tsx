@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 import useSWR from 'swr'
 
 import { DeleteComp } from '@/components/delete-comp'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import axiosInstance from '@/utils/axiosInstance'
@@ -38,7 +39,11 @@ const CustomerPage = () => {
     return data?.data
   })
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner className="w-10 h-10" />
+      </div>
+    )
   }
   if (error) {
     toast.error('Error', {

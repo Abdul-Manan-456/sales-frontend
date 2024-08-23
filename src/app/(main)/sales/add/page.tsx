@@ -6,7 +6,7 @@ import moment from 'moment'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { toast } from 'sonner'
 import useSWR from 'swr'
 
@@ -94,6 +94,14 @@ const AddSales = () => {
     control,
     name: 'items'
   })
+  const itemsArray = useWatch({ control, name: 'items' })
+  const paidAmountWatch = useWatch({ control, name: 'paidAmount' })
+  const grandTotal = itemsArray?.reduce(
+    (total, item) => total + (item.quantity || 0) * (item.price || 0),
+    0
+  ) as number
+  setValue('totalAmount', grandTotal)
+  setValue('dueAmount', grandTotal - (paidAmountWatch || 0))
   const handleDate = (date: any) => {
     const utcDate = moment(date).format()
     setDate(date)
@@ -112,8 +120,7 @@ const AddSales = () => {
         })
         reset(defaultValues)
       })
-      .catch((err) => {
-        console.log(err, 'error===========')
+      .catch(() => {
         setLoading(false)
         toast.error('Error', {
           description: 'Something went wrong.Try Later'
@@ -131,7 +138,6 @@ const AddSales = () => {
       <Card className="rounded-sm w-full max-w-xs sm:max-w-4xl">
         <CardHeader>
           <Button onClick={router.back} className="h-8 w-20 mb-2">
-            {' '}
             <BackArrow /> Back
           </Button>
           <CardTitle>Add Sales</CardTitle>
@@ -348,7 +354,6 @@ const AddSales = () => {
                   />
                 </PopoverContent>
               </Popover>
-              {/* <Textarea {...register("description")} name="description" className="min-h-60px" placeholder="Description about user" /> */}
             </div>
             <div className="mt-10 flex items-center justify-between">
               <Link href="/sales">
@@ -356,7 +361,13 @@ const AddSales = () => {
                   Cancel
                 </Button>
               </Link>
-              <Button className="h-10 px-8" disabled={loading} type="submit">
+
+              <Button
+                onClick={router.back}
+                className="h-10 px-8"
+                disabled={loading}
+                type="submit"
+              >
                 Save Changes
                 <span className={loading ? 'loader ml-4' : ''}></span>
               </Button>

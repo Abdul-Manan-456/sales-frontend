@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
+import { toast } from 'sonner'
 
 import { BaseUrl } from '@/lib/constants'
 
@@ -11,8 +13,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
-
+    const token = Cookies.get('token')
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
@@ -24,15 +25,19 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-// axiosInstance.interceptors.response.use(
-//   (response) => {
-//     // Process the response data if necessary
-//     return response
-//   },
-//   (error) => {
-//     // Handle the error
-//     return Promise.reject(error)
-//   }
-// )
-
+export const swrFetcher = async (url: any) => {
+  const { data } = await axiosInstance
+    .get(url)
+    .then((res) => res.data)
+    .catch((error) => {
+      const errTitle = error?.request?.statusText || 'Error'
+      const errDesc =
+        error?.response?.data?.message || 'Something Went Wrong.Try Again Later'
+      toast.error(errTitle, {
+        description: errDesc
+      })
+      throw error?.response?.data
+    })
+  return data
+}
 export default axiosInstance

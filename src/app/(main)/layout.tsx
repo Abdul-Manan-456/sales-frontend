@@ -1,5 +1,5 @@
 'use client'
-import './globals.css'
+import '../globals.css'
 
 import { RecoilRoot } from 'recoil'
 import { Toaster } from 'sonner'
@@ -8,7 +8,7 @@ import ProtectedRoute from '@/components/protected-route'
 import { Toaster as ChadToaster } from '@/components/ui/toaster'
 import StoreProvider from '@/lib/redux/StoreProvider'
 
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 
 export default function RootLayout({
   children

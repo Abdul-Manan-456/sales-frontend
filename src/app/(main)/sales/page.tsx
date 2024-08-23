@@ -5,6 +5,7 @@ import React from 'react'
 import { toast } from 'sonner'
 import useSWR from 'swr'
 
+import LoadingSpinner from '@/components/loading/loading-spinner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
@@ -32,7 +33,11 @@ const SalesPage = () => {
   const sales = data?.data
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner className="w-10 h-10" />
+      </div>
+    )
   }
   if (error) {
     toast.error('Error', {

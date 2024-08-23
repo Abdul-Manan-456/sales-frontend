@@ -4,6 +4,7 @@ import useSWR from 'swr'
 
 import CategoryComp from '@/components/category/categoryComp'
 import SubCategoryComp from '@/components/category/subCategoryComp'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import axiosInstance from '@/utils/axiosInstance'
@@ -18,7 +19,11 @@ const Category = () => {
   const categories = data?.data
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner className="w-10 h-10" />
+      </div>
+    )
   }
   if (error) {
     toast.error('Error', {
