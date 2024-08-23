@@ -119,6 +119,7 @@ const AddSales = () => {
           description: 'Sales Added in database'
         })
         reset(defaultValues)
+        router.back()
       })
       .catch(() => {
         setLoading(false)
@@ -126,7 +127,6 @@ const AddSales = () => {
           description: 'Something went wrong.Try Later'
         })
       })
-    router.back()
   }
   const appendItem = () =>
     append({
