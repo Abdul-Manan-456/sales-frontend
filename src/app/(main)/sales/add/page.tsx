@@ -126,6 +126,7 @@ const AddSales = () => {
           description: 'Something went wrong.Try Later'
         })
       })
+    router.back()
   }
   const appendItem = () =>
     append({
@@ -308,7 +309,6 @@ const AddSales = () => {
               <InputComp
                 label="Total Amount"
                 name="totalAmount"
-                // placeHolder="Enter Customer name"
                 control={control}
               />
               <InputComp
@@ -362,12 +362,7 @@ const AddSales = () => {
                 </Button>
               </Link>
 
-              <Button
-                onClick={router.back}
-                className="h-10 px-8"
-                disabled={loading}
-                type="submit"
-              >
+              <Button className="h-10 px-8" disabled={loading} type="submit">
                 Save Changes
                 <span className={loading ? 'loader ml-4' : ''}></span>
               </Button>
